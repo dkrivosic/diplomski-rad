@@ -1,6 +1,16 @@
 \documentclass[times, utf8, diplomski]{fer}
 \usepackage{booktabs}
 
+\usepackage{listings}
+\lstset{
+  basicstyle=\ttfamily,
+  mathescape,
+  extendedchars=true,
+  literate={ć}{{\'c}}1 {č}{{\v{c}}}1 {đ}{{\-d}}1 {š}{{\v{s}}}1 {ž}{{\v{z}}}1
+}
+
+\graphicspath{ {./img} }
+
 \begin{document}
 
 \thesisnumber{1709}
@@ -23,12 +33,10 @@
 \input{tex/uvod.tex}
 
 \chapter{Detekcija objekata prije konvolucijskih modela}
-% TODO: Detekcija objekata prije konvolucijskih modela
-Uvod o metodama detekcije objekata prije popularizacije konvolucijskih modela.
+\input{tex/detekcija_bez_konvolucije.tex}
 
 \section{Viola-Jones}
-% TODO: Viola-Jones
-Opis algoritma.
+\input{tex/viola_jones.tex}
 
 \chapter{Detekcija objekata konvolucijskim modelima}
 % TODO: Viola-Jones
