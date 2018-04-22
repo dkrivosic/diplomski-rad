@@ -60,3 +60,12 @@ Konvolucija međutim nije ekvivarijantna s obzirom na skaliranje i rotaciju.
 	\label{povezanost}
 \end{figure}
 
+\subsection{Sažimanje}
+Tipični konvolucijski sloj se sastoji od konvolucije, nelinearne aktivacijske funkcije i sloja sažimanja. Sloj sažimanja preslikava skup prostorno bliskih značajki na ulazu u jednu značajku na izlazu pri čemu je izlaz uglavnom neki statistički pokazatelj kao npr. srednja vrijednost ili maksimum. Općenito, sažimanjem se postiže invarijantnost na pomak što znači da ako se ulaz translatira za mali iznos, većina vrijednosti na izlazu sloja sažimanja će ostati nepromijenjena. Invarijantnost na male translacije je posebno korisna ako nas ne zanima točan položaj neke značajke, nego samo pojavljuje li se ta značajka ili ne. Budući da se sažimanjem dobije statistička mjera cijelog susjedstva, na izlazu možemo koristiti i manji broj značajki od samog broja ulaza. Kako bi se izbjeglo računanje izlaza koji se ne koriste, izlaze možemo računati tako da se pri računanju izlaza sloja sažimanja pomičemo za $k$ piksela umjesto za jedan. Time se postiže i veća brzina izvođenja jer se broj izračuna smanji za otprilike $k$ puta. Sažimanje je u mnogim primjenama važno za obradu ulaza različitih veličina. Na primjer, kod klasifikacije slika, potpuno povezani slojevi moraju imati fiksan ulaz pa se reguliranjem pomaka i veličine sloja sažimanja može osigurati da je izlaz iz sloja uvijek fiksne veličine. 
+
+ \begin{figure}
+	\centering
+	\includegraphics[scale=1]{img/sazimanje.png}
+	\caption{Sažimanje maksimalnom vrijednosti s pomakom od 2 piksela.}
+	\label{sazimanje}
+\end{figure}
