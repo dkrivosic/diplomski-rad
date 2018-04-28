@@ -1,0 +1,23 @@
+Fast R-CNN (\cite{NIPS2015_5638}) je uveo velika ubrzanja u treningu i detekciji u odnosu na R-CNN i ako zanemarimo vrijeme potrebno za predlaganje regija, detektira objekte gotovo u stvarnom vremenu. Međutim, Fast R-CNN je ovisan o algoritmu predlaganja regija što mu je usko grlo u kontekstu vremena detekcije. Predlaganje regija traje otprilike koliko i detekcija objekata.
+Faster R-CNN umjesto algoritama poput selektivne pretrage, koristi neuronsku mrežu za predlaganje regija koja je uz korištenje grafičkog procesora za red veličine brža od najbržih algoritama za predlaganje regija.
+Mreža za predlaganje regija na ulazu prima sliku proizvoljne veličine i na izlazu vraća prijedloge regija. Mreža je potpuno konvolucijska i dijeli konvolucijske slojeve s Fast R-CNN mrežom koju Faster R-CNN koristi za detekciju objekata. Na dijeljene slojeve se dodaje jedan konvolucijski dimenzija $n \times n$ i na njega dva konvolucijska sloja dimenzija $1 \times 1$. Na izlazu konvolucijskog sloja dimenzija $n \times n$ je ReLu aktivacijska funkcija $ReLu(x) = max(0, x)$. Izlaz mreže se zatim prosljeđuje u dva izlazna sloja: sloj za klasifikaciju regije i sloj za regresiju prozora u kojem se nalazi objekt. 
+Za svaku lokaciju mape značajki zadnjeg dijeljenog konvolucijskog sloja se predviđa $k$ prozora pa izlazni sloj za predviđanje prozora ima $4k$ izlaza, a klasifikacijski sloj $2k$ koji označavaju vjerojatnosti da se objekt nalazi ili ne nalazi u prozoru. Predviđene lokacije prozora se gledaju relativno u odnosu na $k$ referentnih prozora koji se još nazivaju sidra. Sidra su pravokutnici različitih, unaprijed određenih veličina i omjera stranica koji se ponavljaju na svakoj lokaciji mape značajki. Za mapu značajki dimenzija $W \times H$, ukupan broj referentnih prozora je $W \times h \times k$. Time se postiže invarijantnost modela na translaciju.
+Za treniranje mreže za predlaganje regija svakom referentnom prozoru se dodjeljuje pozitivna ili negativna oznaka. Pozitivna oznaka se dodjeljuje onom prozoru koji ima najveći omjer presjeka i unije sa stvarnim prozorom u kojem se nalazi objekt i svim prozorima čiji je omjer presjeka i unije veći od 0.7. Negativne oznake se daju svim prozorima koji nisu označeni kao pozitivni, a nemaju omjer presjeka i unije s nijednim stvarnim prozorom veći od 0.3.
+S tako definiranim pozitivnim i negativnim primjerima, funkcija pogreške je 
+\[
+	L(\{p_i\}, \{t_i\}) = \frac{1}{N_{cls}} \sum\limits_i L_{cls}(p_i, p_i^*) + \lambda \frac{1}{N_{reg}} \sum\limits_i p_i^* L_reg(t_i, t_i^*)
+\]
+, gdje $i$ označava indeks sidra, a $p_i$ predviđenu vjerojatnost da se u tom prozoru $i$ nalazi objekt. $p_i^*$ je jednak 1 ako se objekt nalazi u prozoru, a 0 ako se ne nalazi. $t_i$ je četverodimenzionalni vektor koji označava predviđeni prozor, a $t_i^*$ označava stvarni prozor u kojem se nalazi objekt. Pogreška klasifikacija $L_{cls}$ je negativna log-izglednost razreda, a pogreška regresije $L_{reg}$ se računa kao $R(t_i - t_i^*)$, gdje je $R$ zaglađena $L_1$ pogreška koja je ista kao i kod Fast R-CNN-a. Izraz $p_i^*L_{reg}$ znači da se pogreška regresije računa samo za pozitivne primjere. Vektori $t$ i $t^*$ ne prikazuju stvarne vrijednosti koordinata prozora, visine i širine nego koriste izvedene vrijednosti:
+\[
+	t_x = (x - x_a) / w_a \quad t_y = (y - y_a) / h_a \quad
+	t_w = log(w / w_a) \quad t_h = log(h / h_a)
+\]
+\[
+	t_x^* = (x^* - x_a) / w_a \quad t_y^* = (y^* - y_a) / h_a \quad
+	t_w^* = log(w^* / w_a) \quad t_h^* = log(h^* / h_a)
+\]
+
+Koristeći opisanu funkciju pogreške, Mreža za predlaganje regija se može trenirati stohastičkim gradijentnim spustom korištenjem Backpropagation algoritma za računanje gradijenata.
+Budući da mreža za predlaganje regija, i Fast R-CNN dijele konvolucijske slojeve, potrebno je trenirati mrežu tako da pogreška predlaganja regije, kao i pogreške klasifikacije i regresije utječu na težine konvolucijskih slojeva. Kako bi to bilo moguće, razvijen je algoritam koji se sastoji od četiri koraka. U prvom koraku se trenira mreža za predlaganje regija inicijalizirana modelom treniranim na skupu podataka ImageNet. U drugom koraku se trenira Fast R-CNN korištenjem predloženih regija generiranih mrežom treniranom u prvom koraku. U trećem koraku koristimo konvolucijske slojeve Fast R-CNN-a za inicijalizaciju mreže za predlaganje regija, ali se dijeljeni slojevi ne mijenjaju nego se treniraju slojevi specifični za mrežu za predlaganje regija. U četvrtom koraku dijeljeni konvolucijski slojevi su također nepromijenjeni, a treniraju se potpuno povezani slojevi Fast R-CNN mreže.
+Uvođenjem mreže za predlaganje regija koja dijeli konvolucijske slojeve s Fast R-CNN-om postiže se ubrzanje kod treninga i detekcije i povećanje preciznosti detekcije.
+	
