@@ -30,3 +30,17 @@ gdje $\mathbbm{1}_{i}^{obj}$ označava nalazi li se objekt u ćeliji $i$, a $\ma
 	\caption{Prikaz detekcije objekata YOLO modelom.}
 	\label{yolo_detekcija}
 \end{figure}
+
+\subsection{YOLO v2}
+YOLO v2, \cite{DBLP:journals/corr/RedmonF16}, je poboljšana inačica YOLO modela koja omogućava podešavanje ravnoteže između brzine i preciznosti tako da radi s različitim veličinama slike. Ako model na ulazu dobije veće slike, bit će sporiji, ali precizniji i obrnuto tome, ako na ulazu dobije manje slike, bit će brži ali manje precizan. Ako obrađuje 40 slika u sekundi, na skupu podataka Pascal VOC 2007 (\cite{pascal-voc-2007}) postiže bolje rezultate od Faster R-CNN-a i SSD-a i znatno je brži. YOLO v2 za razliku od originalnog YOLO modela ne predviđa prozore direktno nego koristi "sidra" pa predviđa promijene unaprijed određenog prozora kao što radi i Faster R-CNN. Za razliku od Faster R-CNN-a kod kojeg se "sidra" biraju ručno, YOLO v2 ih određuje provođenjem algoritma K srednjih vrijednosti nad prozorima u skupu podataka za trening. Udaljenost prozora od centroida računa se formulom $d(prozor, centroid) = 1 - IOU(prozor, centroid)$, gdje je $IOU$ omjer presjeka i unije prozora i centroida.
+Da bi model mogao raditi s različitim veličinama slika, tijekom treninga se mijenjaju veličine ulaznih slika kako bi mreža naučila detektirati objekte neovisno o veličini slike.  
+Zbog dodatnog ubrzanja modela, YOLO v2 koristi manju konvolucijsku mrežu, Darknet-19, čija je arhitektura temeljena na Googlenet arhitekturi. 
+Autori također treniraju model YOLO9000 koji koristi YOLO v2 arhitekturu, ali se paralelno trenira za klasifikaciju i detekciju te može detektirati 9000 različitih razreda objekata.
+
+\subsection{YOLO v3}
+YOLO v3, \cite{DBLP:journals/corr/abs-1804-02767}, uvodi nekoliko manjih promjena u odnosu na YOLO v2 koje povećavaju preciznost modela.
+Predviđanje prozora se radi u odnosu na centroide dobivene provođenjem algoritma K srednjih vrijednosti kao i kod YOLO v2. Za klasifikaciju se ne koristi softmax da bi se omogućila pripadnost objekta u više razreda, kao kod YOLO9000.
+Novost u odnosu na prethodni model je da radi predikciju na 3 skale. Detekcija se radi tako da se na 3 mape značajki na različitim mjestima u mreži primjene jezgre dimenzija $1 \times 1$. Ukupna veličina jezgre je $1 \times 1 \times (B \times (5 + C))$, gdje je $B$ broj predviđenih prozora, a C broj razreda. Još jedna novost je nova arhitektura konvolucijske mreže, Darknet-53. Darknet-53 se sastoji od 53 konvolucijska sloja što je veće od mreže korištene u YOLO v2 pa je detekcija sporija, ali povećava preciznost modela. 
+U usporedbi s YOLO v2, YOLO v3 je bolji u detekciji malih objekata, ali je lošiji u detekciji srednjih i velikih objekata.
+
+ 
