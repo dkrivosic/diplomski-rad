@@ -1,0 +1,21 @@
+U izradi projekta korišten je programski jezik Python i programski okvir otvorenog koda Tensorflow. Tensorflow je razvio Googleov Brain tim za potrebe istraživanja, a 2015. je postao javno dostupan. Služi za razvoj modela za strojno učenje, a najviše se koristi za razvoj dubokih neuronskih mreža jer ima podršku za paralelno izvođenje na grafičkim procesorima. Također, ima podršku za brojne druge platforme, uključujući i mobilne uređaje, pa je osim za istraživanje pogodan i za produkciju. Tensorflow Object Detection API, \cite{DBLP:journals/corr/HuangRSZKFFWSG016}, je programski okvir razvijen nad Tensorflowom koji omogućuje jednostavnu izgradnju, trening i isporuku modela za detekciju objekata. U trenutku pisanja dostupna je podrška za modele Single Shot Multibox Detector (SSD), Faster R-CNN, R-FCN koji su opisani u prethodnim poglavljima i Mask R-CNN koji se koristi za segmentaciju instanci objekata. Modeli se definiraju u konfiguracijskoj datoteci koja ima sljedeću strukturu:
+\begin{lstlisting}
+	model {
+	...
+	}
+	train_config {
+	...
+	}
+	train_input_reader: {
+	...
+	}
+	eval_config {
+	...
+	}
+	eval_input_reader: {
+	...
+	}
+\end{lstlisting}
+U dijelu "model" se definira meta arhitektura modela, konvolucijska mreža za izlučivanje značajki, način pretprocesiranja slika i postavljaju se hiperparametri modela. U dijelu "train\_config" definira se optimizacijski algoritam i njegovi hiperparametri. U "train\_input\_reader" i "eval\_input\_reader" se postavljaju staze do datoteka koje sadrže podatke za trening, odnosno validaciju i do datoteke koja povezuje indeks razreda objekta s imenom razreda. Konačno, u "eval\_config" se postavlja broj primjera u skupu za provjeru te maksimalan broj evaluacija modela na zadanom skupu.
+Za obradu slika i videa i njihov prikaz korišten je Open CV.
+Trening i evaluacija modela pokretani su korištenjem Googleovog alata Colaboratory (colab.research.google.com) koji omogućava izvođenje Jupyter bilježnica na poslužitelju. Glavni razlog korištenja Colaboratoryja je što omogućava besplatno korištenje grafičke kartice Nvidia Tesla K80. 
