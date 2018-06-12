@@ -42,5 +42,17 @@ Pascal VOC je skup slika koji se koristi za natjecanja u detekciji objekata i se
 \subfloat{\includegraphics[height = 1.3in]{img/Pascal-VOC/2008_000216}} \
 \subfloat{\includegraphics[height = 1.3in]{img/Pascal-VOC/2008_000333}}
 \caption{Primjeri slika s ljudima iz skupa podataka Pascal VOC 2012.}
-\end{figure}	
+\end{figure}
+
 \section{Nogometne utakmice}
+
+Skup slika s nogometnih utakmica napravljen je koristeći snimku utakmice prve hrvatske nogometne lige između Dinama i Splita. Utakmica je snimana dvjema nepomičnim kamerama čije su snimke spojene u jednu tako da se u svakom trenutku na snimci vidi cijeli teren. Kao točne detekcije, preuzete su detekcije dobivene algoritmom za praćenje igrača. Budući da algoritam nije savršeno točan, iz snimke su izabrane slike s najboljim detekcijama, a kvaliteta detekcije je određena subjektivnom procjenom. Zatim je svaka slika podijeljena u mrežu $2 \times 10$ i svaka ćelija mreže se koristi kao jedna slika u skupu podataka kako bi se slike lakše mogle koristiti za trening i detekciju (zbog manjih dimenzija).
+
+\begin{figure}[h]
+\begin{center}
+\subfloat{\includegraphics[height = 1.5in]{img/football/0003}} \
+\subfloat{\includegraphics[height = 1.5in]{img/football/0005}} \
+\subfloat{\includegraphics[height = 1.5in]{img/football/0006}}
+\caption{Primjeri slika iz skupa slika s nogometnih utakmica s prikazanim točnim oznakama.}
+\end{center}
+\end{figure}
