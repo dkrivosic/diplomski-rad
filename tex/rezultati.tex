@@ -1,4 +1,4 @@
-Zbog pravedne usporedbe, korišteni su modeli koji su trenirani na COCO skupu podataka, a osim YOLO v3, svi modeli su implementirani u sklopu Tensorflow Object Detection API-ja. Budući da u trenutku pisanja Tensorflow Object Detection API ne podržava YOLO, za evaluaciju YOLO v3 je korištena originalna implementacija autora. Modeli su evaluirani na skupovima INRIA People, PeopleArt i Pascal VOC 2012 bez oznaka koje ne predstavljaju ljude. Srednje preciznosti detekcije su prikazane u tablici \ref{tablica_preciznosti}. Imena modela u tablici osim samog imena modela sadrže i ime konvolucijske mreže koja se koristi za izlučivanje značajki.
+Zbog pravedne usporedbe, korišteni su modeli koji su trenirani na COCO skupu podataka, a osim YOLO v3, svi modeli su implementirani u sklopu Tensorflow Object Detection API-ja. Budući da u trenutku pisanja Tensorflow Object Detection API ne podržava YOLO, za evaluaciju YOLO v3 je korištena originalna implementacija autora. Modeli su evaluirani na skupovima INRIA People, PeopleArt i Pascal VOC 2012 koristeći samo oznake koje se odnose na osobe. Za usporedbu modela koristili smo srednju preciznost. Srednja preciznost se računa kao omjer broja točnih detekcija i ukupnog broja detekcija. Točna detekcija je ona koja ima omjer presjeka i unije sa stvarnim prozorom oko objekta veći od $0.5$. Ako postoji više detekcija istog objekta, prva se uzima kao točna dok su ostale netočne. Srednje preciznosti detekcije su prikazane u tablici \ref{tablica_preciznosti}. Imena modela u tablici osim samog imena modela sadrže i ime konvolucijske mreže koja se koristi za izlučivanje značajki.
 
 \begin{table}[h]
 	\begin{center}
@@ -19,7 +19,7 @@ Zbog pravedne usporedbe, korišteni su modeli koji su trenirani na COCO skupu po
 
 Na skupu INRIA najbolje rezultate postiže Faster R-CNN nakon kojeg slijede R-FCN i YOLO dok su obje inačice SSD modela znatno lošije u detekciji ljudi. Na Pascal VOC 2012, poredak modela po preciznosti je sličan kao i na INRIA skupu osim što YOLO postiže lošije rezultate od svih modela. Međutim, na PeopleArt skupu, YOLO je puno precizniji od ostalih modela.
 Općenito, najbolje rezultate algoritmi postižu na INRIA skupu podataka u kojem su ljudi u prvom planu i zauzimaju velik dio slike, a nešto lošije rezultate postižu na skupu Pascal VOC 2012 koji se također sastoji od fotografija, ali se ljudi pojavljuju i u manjim veličinama u odnosu na sliku.
-Tipična pogreška Faster R-CNN modela je višestruka detekcija tj. detekcija nepostojećih ljudi. Primjeri pogrešaka su prikazani na slici \ref{faster_greske}.
+Tipične pogreške Faster R-CNN modela su višestruka detekcija i lažna detekcija. Primjeri pogrešaka su prikazani na slici \ref{faster_greske}.
 
 \begin{figure}[H]
 \begin{center}
@@ -39,7 +39,7 @@ R-FCN, kao i Faster R-CNN, najčešće griješi višestrukim detekcijama, osobit
 \label{rfcn_greske}
 \end{figure}
 
-Za razliku od Faster R-CNN-a i R-FCN-a, SSD ima zanemariv broj višestrukih detekcija ili detekcija nepostojećih osoba. Najčešće pogreške SSD modela se događaju kada se na slici više osoba nalazi jedna pored druge. U takvim slučajevima model može prepoznati više osoba kao jednu ili prepoznati samo jednu osobu a druge u blizini zanemariti. Osim toga, u nekim slučajevima ne prepoznaje osobe okrenute leđima ili bočno. Na slici \ref{ssd_greske} su prikazani primjeri najčešćih pogrešaka.
+Za razliku od Faster R-CNN-a i R-FCN-a, SSD ima zanemariv broj višestrukih i lažnih detekcija. Najčešće pogreške SSD modela se događaju kada se na slici više osoba nalazi jedna pored druge. U takvim slučajevima model može prepoznati više osoba kao jednu ili prepoznati samo jednu osobu a druge u blizini zanemariti. Osim toga, u nekim slučajevima ne prepoznaje osobe okrenute leđima ili bočno. Na slici \ref{ssd_greske} su prikazani primjeri najčešćih pogrešaka.
 
 \begin{figure}[H]
 \subfloat{\includegraphics[height = 1.6in]{img/ssd_err/person_087}} \
@@ -49,7 +49,7 @@ Za razliku od Faster R-CNN-a i R-FCN-a, SSD ima zanemariv broj višestrukih dete
 \label{ssd_greske}
 \end{figure}
 
-YOLO ima mali broj lažno pozitivnih detekcija i u usporedbi s ostalim algoritmima je izuzetno dobar u detekciji ljudi koji su u daljini i relativno mali u odnosu na veličinu slike. Međutim, YOLO najčešće griješi tako da ne prepoznaje ljude koji su bliže kameri i relativno veliki u odnosu na sliku. Primjeri pogrešaka su prikazani na slici \ref{yolo_greske}.
+YOLO ima mali broj lažnih detekcija i u usporedbi s ostalim algoritmima je izuzetno dobar u detekciji ljudi koji su u daljini i relativno mali u odnosu na veličinu slike. Međutim, YOLO najčešće griješi tako da ne prepoznaje ljude koji su bliže kameri i relativno veliki u odnosu na sliku. Primjeri pogrešaka su prikazani na slici \ref{yolo_greske}.
 
 \begin{figure}[H]
 \subfloat{\includegraphics[height = 2in]{img/yolo_err/crop001719}} \
@@ -99,7 +99,7 @@ Općenito, svi modeli griješe tako da ne detektiraju ljude, posebno ako su ljud
 \end{center}
 \end{figure}
 
-Algoritmi su testirani i na slikama visoke rezolucije s nogometne utakmice na kojima se vidi cijeli teren. Budući da slike prikazuju veliki prostor odjednom, igrači su vrlo mali u odnosu na sliku i niti jedan algoritam ne prepoznaje niti jednog igrača. Međutim, ako se slika podijeli na manje dijelove i ako se za svaki dio posebno napravi predikcija te se rezultati na kraju spoje u jednu sliku, dobivaju se zanimljivi rezultati. Detekcije različitih algoritama za sliku koja je prilikom detekcije podijeljena na mrežu $2 \times 10$ su prikazane na slikama \ref{nogomet_ssd_mobilenet}, \ref{nogomet_ssd_inception}, \ref{nogomet_rfcn}, \ref{nogomet_faster} i \ref{nogomet_yolo}. Zbog velikih dimenzija, slike su prikazane u dva dijela (lijevi i desni dio terena).
+Algoritmi su testirani i na slikama visoke rezolucije s nogometne utakmice na kojima se vidi cijeli teren. Budući da slike prikazuju veliki prostor odjednom, igrači su vrlo mali u odnosu na sliku i niti jedan algoritam ne prepoznaje niti jednog igrača. Na slici rezolucije $3260 \times 570$ visine igrača se kreću u rasponu od 20 do 60 piksela, ovisno o udaljenosti od kamere. Međutim, ako se slika podijeli na manje dijelove ($326 \times 285$) i ako se za svaki dio posebno napravi predikcija te se rezultati na kraju spoje u jednu sliku, dobivaju se zanimljivi rezultati. Detekcije različitih algoritama za sliku koja je prilikom detekcije podijeljena na mrežu $2 \times 10$ su prikazane na slikama \ref{nogomet_ssd_mobilenet}, \ref{nogomet_ssd_inception}, \ref{nogomet_rfcn}, \ref{nogomet_faster} i \ref{nogomet_yolo}. Zbog velikih dimenzija, slike su prikazane u dva dijela (lijevi i desni dio terena).
 
 \begin{figure}[h]
 \begin{center}

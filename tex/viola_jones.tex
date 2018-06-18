@@ -42,14 +42,14 @@ Nakon obrade cijele slike, objekti će uglavnom biti detektirani više puta. Vi�
 \begin{figure}
 	\centering
 	\includegraphics[scale=1]{img/viola-jones-znacajke.png}
-	\caption{Primjeri značajki s dva (slike A i B), tri (slika C) i četiri (slika D) pravokutnika. Sume piksela u bijelim pravokutnicima se oduzimaju od sume piksela u sivim pravokutnicima da bi se dobila vrijednost značajke.}
+	\caption{Primjeri značajki s dva (slike A i B), tri (slika C) i četiri (slika D) pravokutnika. Sume piksela u bijelim pravokutnicima se oduzimaju od sume piksela u sivim pravokutnicima da bi se dobila vrijednost značajke (\cite{Viola01rapidobject}).}
 	\label{viola-jones-znacajke}
 \end{figure}
 
 \begin{figure}
 	\centering
 	\includegraphics[scale=1]{img/viola-jones-pravokutnici.png}
-	\caption{Svaka točka sadrži sumu svih piksela iznad i lijevo od sebe. Točka 1 sadrži sumu piksela unutar pravokutnika A, točka 2 sumu A + B, točka 3 sumu A + C i točka 4 sumu A + B + C + D. Za izračunavanje sume piksela unutar pravokutnika D trebaju nam vrijednosti točaka 1-4 pa sumu možemo izračunati kao $ii(4)$ - ii(3) - ii(2) + ii(1).}
+	\caption{Svaka točka sadrži sumu svih piksela iznad i lijevo od sebe. Točka 1 sadrži sumu piksela unutar pravokutnika A, točka 2 sumu A + B, točka 3 sumu A + C i točka 4 sumu A + B + C + D. Za izračunavanje sume piksela unutar pravokutnika D trebaju nam vrijednosti točaka 1-4 pa sumu možemo izračunati kao $ii(4)$ - ii(3) - ii(2) + ii(1) (\cite{Viola01rapidobject}).}
 	\label{viola-jones-pravokutnici}
 \end{figure}
 

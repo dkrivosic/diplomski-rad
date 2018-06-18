@@ -9,18 +9,18 @@ Za trening modela koristi se funkcija pogreške koja se sastoji od pogreške kla
 	L(s, t_{x, y, w, h}) = L_{cls}(s_{c^*}) + \lambda [c^* > 0]L_{reg}(t, t^*)
 \]
 Za pogrešku klasifikacije se koristi unakrsna entropija ($L_{cls} = - \log(s_{c^*})$), a pogreška regresije je ista kao i kod Fast R-CNN-a. $c^*$ je oznaka stvarnog razreda gdje $c^* = 0$ označava pozadinu. Izraz $[c^* > 0]$ poprima vrijednost 1 ako je zadovoljen uvjet $c^* > 0$, tj. pogreška regresije se ne računa ako predviđena regija predstavlja pozadinu. Parametrom $\lambda$ se regulira ravnoteža između pogreške klasifikacije i pogreške regresije, a autori ga postavljaju na $1$.
-Budući da je broj računskih operacije koje su specifične za pojedinu predviđenu regiju mali, broj predviđenih regija $N$ ne pogoršava performanse prolaska unaprijed u velikoj mjeri. Stoga se uzima veći broj ($N$) predviđenih regija i za svaku se računa funkcija pogreške. Zatim se uzima $B$ regija s najvećom pogreškom i prolazak unazad se radi samo za te odabrane regije.
+Budući da je broj računskih operacija koje su specifične za pojedinu predviđenu regiju mali, broj predviđenih regija $N$ ne pogoršava performanse prolaska unaprijed u velikoj mjeri. Stoga se uzima veći broj ($N$) predviđenih regija i za svaku se računa funkcija pogreške. Zatim se uzima $B$ regija s najvećom pogreškom i prolazak unazad se radi samo za te odabrane regije.
 
  \begin{figure}
 	\centering
 	\includegraphics[scale=0.9]{img/rfcn_arhitektura.png}
-	\caption{Arhitektura modela R-FCN.}
+	\caption{Arhitektura modela R-FCN (\cite{DBLP:journals/corr/DaiLHS16}).}
 	\label{rfcn_arhitektura}
 \end{figure}
 
  \begin{figure}
 	\centering
 	\includegraphics[scale=0.7]{img/rfcn_vizualizacija.png}
-	\caption{Vizualizacija detekcije modelom R-FCN. Za predviđenu regiju uzima se dio izlaza zadnjeg konvolucijskog sloja koji odgovara dijelu slike koji pokriva predviđena regija te se dijeli na mrežu $3 \times 3$ i tvori mapu rezultata. Za svaku ćeliju mreže slojem sažimanja ovisnim o poziciji se predviđa nalazi li se odgovarajući dio objekta u toj ćeliji. Na primjer, nalazi li se gornji lijevi dio čovjeka u gornjoj lijevoj ćeliji. Na kraju se glasanje vrši računanjem srednje vrijednosti izlaza sloja sažimanja i donosi se zaključak da se na slici stvarno nalazi čovjek.}
+	\caption{Vizualizacija detekcije modelom R-FCN. Za predviđenu regiju uzima se dio izlaza zadnjeg konvolucijskog sloja koji odgovara dijelu slike koji pokriva predviđena regija te se dijeli na mrežu $3 \times 3$ i tvori mapu rezultata. Za svaku ćeliju mreže slojem sažimanja ovisnim o poziciji se predviđa nalazi li se odgovarajući dio objekta u toj ćeliji. Na primjer, nalazi li se gornji lijevi dio čovjeka u gornjoj lijevoj ćeliji. Na kraju se glasanje vrši računanjem srednje vrijednosti izlaza sloja sažimanja i donosi se zaključak da se na slici stvarno nalazi čovjek (\cite{DBLP:journals/corr/DaiLHS16}).}
 	\label{rfcn_vizualizacija}
 \end{figure}

@@ -3,12 +3,12 @@ Sastoji se od duboke konvolucijske mreže koja na izlazu daje skup detekcija kon
 Za mapu značajki dimenzija $m \times n$ na svakoj od $m \times n$ lokacija se računa izlaz. Svakoj lokaciji se pridjeljuju unaprijed odabrani prozori različitih veličina i omjera stranica, a izlazi mreže predstavljaju pomake u odnosu na te prozore. Izlaz za svaku lokaciju uključuje predikcije pomaka svih $k$ unaprijed određenih prozora i za svaki prozor vjerojatnosti pripadnosti svakom od $c$ razreda. Na svaku lokaciju mape značajki se stoga primjenjuje $(c + 4)k$ filtera što je ukupno $(c + 4)kmn$ filtera za cijelu mapu značajki. Skale unaprijed određenih prozora za svaku od $m$ mapa značajki se računaju po formuli
 \[
 	s_k = s_{min} + \frac{s_{max} -s_{min}}{m - 1}(k - 1), \quad k \ \epsilon \ [1, m]
-\], gdje je $s_{min}$ najmanja skala, a $s_{max}$ najveća skala. U originalnom radu se koristi 0.2 za najmanju skalu, a 0.9 za najveću. Ako se omjer stranica prozora označi s $a_r$, širina prozora se računa po formuli $w_k^a = s_k \sqrt{a_r}$, a visina po formuli $w_k^a = s_k / \sqrt{a_r}$. Arhitektura modela je prikazana na slici \ref{ssd_arhitektura}.
+\]gdje je $s_{min}$ najmanja skala, a $s_{max}$ najveća skala. U originalnom radu se koristi 0.2 za najmanju skalu, a 0.9 za najveću. Ako se omjer stranica prozora označi s $a_r$, širina prozora se računa po formuli $w_k^a = s_k \sqrt{a_r}$, a visina po formuli $w_k^a = s_k / \sqrt{a_r}$. Arhitektura modela je prikazana na slici \ref{ssd_arhitektura}.
 
  \begin{figure}
 	\centering
 	\includegraphics[scale=0.5]{img/ssd_arhitektura.png}
-	\caption{Arhitektura SSD modela.}
+	\caption{Arhitektura SSD modela (\cite{DBLP:journals/corr/LiuAESR15}).}
 	\label{ssd_arhitektura}
 \end{figure}
 

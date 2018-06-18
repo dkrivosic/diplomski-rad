@@ -6,11 +6,11 @@ Važno svojstvo Fast R-CNN modela je da se sve težine mogu trenirati backpropag
 \[
 L(p, u, t^u , v) = L_{cls}(p, u) + \lambda [u \geq 1]L_{loc}(t^u, v)
 \]
-, gdje je $p$ vjerojatnosna razdioba na izlazu sloja sa softmax aktivacijskom funkcijom $p = (p_0, ..., p_K)$, $u$ je stvarni razred regije na ulazu, $t^k$ je predviđeni prozor, a $v$ je stvarni prozor u kojem se nalazi objekt. Izraz $[u \geq 1]$ ima vrijednost 1 ako je stvarni razred objekta neki $1...K$, a 0 ako je stvarni razred objekta 0. Razred 0 označava pozadinu pa u tom slučaju nema smisla određivati lokaciju objekta. Za pogrešku klasifikacije se koristi negativna log-izglednost stvarnog razreda $u$ $L_{cls}(p, u) = - \log p_u$, a za pogrešku lokalizacije objekta se koristi zaglađena $L_1$ pogreška
+gdje je $p$ vjerojatnosna razdioba na izlazu sloja sa softmax aktivacijskom funkcijom $p = (p_0, ..., p_K)$, $u$ je stvarni razred regije na ulazu, $t^k$ je predviđeni prozor, a $v$ je stvarni prozor u kojem se nalazi objekt. Izraz $[u \geq 1]$ ima vrijednost 1 ako je stvarni razred objekta neki $1...K$, a 0 ako je stvarni razred objekta 0. Razred 0 označava pozadinu pa u tom slučaju nema smisla određivati lokaciju objekta. Za pogrešku klasifikacije se koristi negativna log-izglednost stvarnog razreda $u$ $L_{cls}(p, u) = - \log p_u$, a za pogrešku lokalizacije objekta se koristi zaglađena $L_1$ pogreška
 \[
 L_{loc}(t^u, v) = \sum\limits_{i \epsilon \{ x, y, w, h \}} smooth_{L_1} (t^u_i - v_i)
 \]
-, gdje je
+gdje je
 \[
 smooth{L_1}(x) = 
 	\begin{cases}
@@ -26,6 +26,6 @@ U usporedbi s R-CNNom, Fast R-CNN donosi poboljšanje u preciznosti detekcije i 
  \begin{figure}
 	\centering
 	\includegraphics[scale=1]{img/fast_rcnn.png}
-	\caption{Arhitektura Fast R-CNN.}
+	\caption{Arhitektura Fast R-CNN (\cite{DBLP:journals/corr/Girshick15}).}
 	\label{fast_rcnn}
 \end{figure}
